@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello AppController!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+        <div class="example-wrapper">
+        <h1>Hello {{ controller_name }}! ✅</h1>
+
+        This friendly message is coming from:
+        <ul>
+            <li>Your controller at <code><a href="{{ '/home/mvn-h24/Development/PHP/phone-book-app/src/Controller/AppController.php'|file_link(0) }}">src/Controller/AppController.php</a></code></li>
+            <li>Your template at <code><a href="{{ '/home/mvn-h24/Development/PHP/phone-book-app/templates/app/index.html.twig'|file_link(0) }}">templates/app/index.html.twig</a></code></li>
+        </ul>
+        </div>
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</body>
+</html>
