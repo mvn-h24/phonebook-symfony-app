@@ -15,19 +15,19 @@ class Contact
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $first_name;
+    private ?string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $last_name;
+    private ?string $lastName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $patronimyc_name;
+    private ?string $patronimycName;
 
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Phone::class, orphanRemoval: true)]
-    private $phones;
+    private ArrayCollection $phones;
 
     public function __construct()
     {
@@ -41,36 +41,36 @@ class Contact
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): self
+    public function setLastName(string $lastName): self
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     public function getPatronimycName(): ?string
     {
-        return $this->patronimyc_name;
+        return $this->patronimycName;
     }
 
-    public function setPatronimycName(string $patronimyc_name): self
+    public function setPatronimycName(string $patronimycName): self
     {
-        $this->patronimyc_name = $patronimyc_name;
+        $this->patronimycName = $patronimycName;
 
         return $this;
     }

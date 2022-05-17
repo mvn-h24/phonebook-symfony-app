@@ -21,13 +21,14 @@ class PhoneRepository extends ServiceEntityRepository
         parent::__construct($registry, Phone::class);
     }
 
-    public function add(Phone $entity, bool $flush = false): void
+    public function add(Phone $entity, bool $flush = false)
     {
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+        return $entity->getId();
     }
 
     public function remove(Phone $entity, bool $flush = false): void

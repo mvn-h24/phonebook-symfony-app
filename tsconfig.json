@@ -1,14 +1,34 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "strict": true,
-    "module": "es2015",
-    "moduleResolution": "node"
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "baseUrl": "./",
+    "paths": {
+      "@app/types": [
+        "assets/app/types/index.ts"
+      ],
+      "@app/ui/*": [
+        "assets/app/components/*"
+      ]
+    }
   },
-  "files": [
-    "assets/shims.d.ts"
-  ],
   "include": [
-    "./assets/**/*.ts",
+    "assets/**/*.ts",
+    "assets/**/*.d.ts",
+    "assets/**/*.tsx",
+    "assets/**/*.vue"
   ]
 }

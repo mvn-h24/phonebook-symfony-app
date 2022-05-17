@@ -13,17 +13,17 @@ class Phone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $phone_number;
+    private ?string $phoneNumber;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $comment;
+    private ?string $comment;
 
     #[ORM\ManyToOne(targetEntity: Contact::class, inversedBy: 'phones')]
     #[ORM\JoinColumn(nullable: false)]
-    private $contact;
+    private ?Contact $contact;
 
     public function getId(): ?int
     {
@@ -32,12 +32,12 @@ class Phone
 
     public function getPhoneNumber(): ?string
     {
-        return $this->phone_number;
+        return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(string $phone_number): self
+    public function setPhoneNumber(string $phoneNumber): self
     {
-        $this->phone_number = $phone_number;
+        $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
