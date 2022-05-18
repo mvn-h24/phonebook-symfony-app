@@ -1,66 +1,38 @@
 <template>
-  <div id="id_layout">
-    <ActionKey @click="initNewContact">Add contact</ActionKey>
-    <ContactsList :list="contacts_list" />
-    <ContactDialog
-      v-if="new_contact || edit_contact"
-      :contact="new_contact ? new_contact : edit_contact"
-    />
-  </div>
+  <phone-book class="app-centered" />
+  <errors-service />
 </template>
 
 <!--suppress CssUnusedSymbol -->
 <style>
 html,
 body,
-#app,
-#id_layout {
+#app {
   padding: 0;
-
   margin: 0;
   min-height: 100vh;
+}
+
+* {
+  font-family: sans-serif;
+  font-size: 20px;
+}
+
+#app {
+  display: flex;
+}
+
+.app-centered {
+  margin: auto;
 }
 </style>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { Contact } from "./types";
-import ContactsList from "./components/contacts-list.vue";
-import ActionKey from "./components/action-key.vue";
-import ContactDialog from "./components/contact-dialog.vue";
+import { defineComponent } from "vue";
+import PhoneBook from "@app/ui/phone-book.vue";
+import ErrorsService from "@app/ui/errors-service.vue";
 
 export default defineComponent({
-  name: "phonebook-app",
-  components: { ContactDialog, ContactsList, ActionKey },
-  setup() {
-    const contacts_list = ref<Array<Contact>>([]);
-    const new_contact = ref<Omit<Contact, "id"> | null>(null);
-    const edit_contact = ref<Omit<Contact, "id"> | null>(null);
-    return {
-      new_contact,
-      edit_contact,
-      contacts_list,
-    };
-  },
-  mounted() {
-    this.loadContacts();
-  },
-  methods: {
-    loadContacts() {
-      // this.axios
-      //   .get<Array<Contact>, AxiosResponse<Array<Contact>>>("/api/contacts")
-      //   .then((res) => {
-      //     this.contacts_list = res.data;
-      //   });
-    },
-    initNewContact() {
-      this.new_contact = {
-        first_name: "",
-        last_name: "",
-        patronimyc_name: "",
-        phones: [],
-      };
-    },
-  },
+  components: { ErrorsService, PhoneBook },
 });
 </script>

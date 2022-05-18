@@ -1,84 +1,61 @@
 <template>
-  <div class="layout">
+  <div v-if="contact" class="layout">
     <div class="dialog">
       <label>
         <span>First name</span>
-        <input v-model="editedContact.first_name" />
+        <input v-model="contact.firstName" />
       </label>
       <label>
         <span>Last name</span>
-        <input v-model="editedContact.last_name" />
+        <input v-model="contact.lastName" />
       </label>
       <label>
         <span>Patronymic name</span>
-        <input v-model="editedContact.patronimyc_name" />
+        <input v-model="contact.patronimycName" />
       </label>
-
-      <ActionKey class="add-phone" @click="initNewPhone">add phone</ActionKey>
-      <ul v-if="editedContact.phones.length || newPhone">
-        <li v-if="newPhone">
-          <label>
-            <span>phone number</span>
-            <input v-model="newPhone.phone_number" />
-          </label>
-          <label>
-            <span>phone comment</span>
-            <input v-model="newPhone.comment" />
-          </label>
-          <ActionKey @click="saveNewPhone">save phone</ActionKey>
-        </li>
-        <li v-for="phone in editedContact.phones" :key="phone.id">
-          <label>
-            <span>phone number</span>
-            <input :value="phone.phone_number" />
-          </label>
-          <label>
-            <span>phone comment</span>
-            <input :value="phone.comment" />
-          </label>
-        </li>
-      </ul>
-      <ActionKey class="submit-save" @click="saveContact"
-        >save contact
-      </ActionKey>
+      <div class="control-panel">
+        <action-key @click="submit">Submit</action-key>
+        <action-key @click="cancel">Cancel</action-key>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
-import { Contact, Phone } from "@app/types";
+import { defineComponent } from "vue";
 import ActionKey from "@app/ui/action-key.vue";
+import { useContact, useErrorStore } from "@app/store";
+import { storeToRefs } from "pinia";
 
 export default defineComponent({
-  name: "contact-dialog",
+  name: "create-contact-dialog",
   components: { ActionKey },
-  setup(props) {
-    const newPhone = ref<Omit<Phone, "id" | "contact"> | null>(null);
-    const editedContact = ref<Contact | Omit<Contact, "id">>(props.contact);
-    return { newPhone, editedContact };
-  },
-  props: {
-    contact: {
-      type: Object as PropType<Contact | Omit<Contact, "id">>,
-      required: true,
-    },
+  setup() {
+    const contactStore = useContact();
+    const { contact, newContact } = storeToRefs(contactStore);
+    const errorStore = useErrorStore();
+    return { errorStore, contact, contactStore };
   },
   methods: {
-    initNewPhone() {
-      this.newPhone = { comment: "", phoneNumber: "", phone_number: "" };
-    },
-    saveNewPhone() {
-      if (this.newPhone?.comment.length && this.newPhone?.phone_number.length) {
-        // this.contact.phones.push(this.newPhone as Phone);
-        this.newPhone = null;
+    submit() {
+      let error = undefined;
+      if (!this.contact.firstName) {
+        error = "empty first name";
+      } else if (!this.contact.lastName) {
+        error = "empty last name";
+      } else if (!this.contact.patronimycName) {
+        error = "empty patronimyc name";
+      }
+      if (error) {
+        this.errorStore.addError(error, 2000);
+      } else {
+        return this.contactStore.save().then(() => {
+          this.contactStore.flush();
+        });
       }
     },
-
-    saveContact() {
-      // this.axios.post("/api/post-contact-full", this.contact).then((res) => {
-      //   console.log(res);
-      // });
+    cancel() {
+      return this.contactStore.flush();
     },
   },
 });
@@ -99,7 +76,8 @@ export default defineComponent({
 }
 
 .dialog {
-  width: 500px;
+  max-width: 500px;
+  width: 90%;
   min-height: 500px;
   display: flex;
   flex-direction: column;
@@ -109,7 +87,35 @@ export default defineComponent({
   border-radius: 10px;
 }
 
-.submit-save {
+label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+label span,
+label input {
+  flex-basis: 200px;
+  flex-grow: 1;
+  flex-shrink: 2;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+label:not(:first-child) {
+  margin-top: 10px;
+}
+
+.control-panel {
   margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.control-panel :deep(button) {
+  flex-basis: 200px;
+  flex-grow: 1;
 }
 </style>

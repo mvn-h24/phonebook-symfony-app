@@ -27,7 +27,7 @@ class Contact
     private ?string $patronimycName;
 
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Phone::class, orphanRemoval: true)]
-    private ArrayCollection $phones;
+    private Collection $phones;
 
     public function __construct()
     {
