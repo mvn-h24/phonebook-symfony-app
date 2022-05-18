@@ -62,11 +62,13 @@ export default defineComponent({
   border-radius: 20px;
 }
 
-.contacts_list {
-  overflow: scroll;
+.contacts_list::-webkit-scrollbar {
+  /* This is the magic bit for WebKit */
+  display: none;
 }
 
 .contacts_list {
+  overflow-x: scroll;
   margin-top: 10px;
 }
 </style>

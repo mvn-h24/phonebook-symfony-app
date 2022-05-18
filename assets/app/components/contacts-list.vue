@@ -71,7 +71,7 @@ table td {
   padding: 5px 10px;
 }
 
-table td :deep(button:not(first-child)) {
+table td ::v-deep(button:not(first-child)) {
   margin-left: 5px;
 }
 </style>

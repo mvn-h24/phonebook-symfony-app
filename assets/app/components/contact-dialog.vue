@@ -114,7 +114,7 @@ label:not(:first-child) {
   gap: 10px;
 }
 
-.control-panel :deep(button) {
+.control-panel ::v-deep(button) {
   flex-basis: 200px;
   flex-grow: 1;
 }
