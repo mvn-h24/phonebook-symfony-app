@@ -52,7 +52,7 @@ export default defineComponent({
   mounted() {
     this.pnStore.$onAction(({ name, after }) => {
       if (name === "flush") {
-        after(() => this.updateContact());
+        after(() => this.contactStore.update());
       }
     });
   },
@@ -69,15 +69,14 @@ export default defineComponent({
       if (error) {
         this.errorStore.addError(error, 2000);
       } else {
+        this.pnStore.clear();
         return this.contactStore.save().then(() => {
           this.contactStore.flush();
         });
       }
     },
-    updateContact() {
-      this.contactStore.update();
-    },
     cancel() {
+      this.pnStore.clear();
       return this.contactStore.flush();
     },
     initNewPhone() {

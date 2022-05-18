@@ -29,6 +29,9 @@ export const usePhoneNumber = defineStore<string, PhoneStore>(phoneStoreToken, {
     flush() {
       this.phone = undefined;
     },
+    clear() {
+      this.phone = undefined;
+    },
     save() {
       const contact = this.phone as Phone;
       if (
