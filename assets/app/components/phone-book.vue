@@ -54,6 +54,8 @@ export default defineComponent({
 
 <style scoped>
 .island {
+  display: flex;
+  flex-direction: column;
   width: 90%;
   height: 90vh;
   padding: 20px;
@@ -64,7 +66,6 @@ export default defineComponent({
 }
 
 .contacts_list::-webkit-scrollbar {
-  /* This is the magic bit for WebKit */
   display: none;
 }
 

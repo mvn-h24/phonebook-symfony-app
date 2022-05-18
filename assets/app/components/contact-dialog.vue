@@ -98,10 +98,18 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  overflow: scroll;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.layout::-webkit-scrollbar {
+  display: none;
 }
 
 .dialog {
+  margin: auto;
   max-width: 500px;
   width: 90%;
   min-height: 500px;
