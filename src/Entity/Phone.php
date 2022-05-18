@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PhoneRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,6 +24,7 @@ class Phone
 
     #[ORM\ManyToOne(targetEntity: Contact::class, inversedBy: 'phones')]
     #[ORM\JoinColumn(nullable: false)]
+    #[ApiProperty(readableLink: false, writableLink: true)]
     private ?Contact $contact;
 
     public function getId(): ?int

@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\ContactRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,6 +29,8 @@ class Contact
     private ?string $patronimycName;
 
     #[ORM\OneToMany(mappedBy: 'contact', targetEntity: Phone::class, orphanRemoval: true)]
+    #[ApiProperty(readableLink: true, writableLink: true)]
+    #[ApiSubresource(1)]
     private Collection $phones;
 
     public function __construct()

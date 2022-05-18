@@ -8,5 +8,6 @@ api_platform:
     jsonld: [ 'application/ld+json' ]
     json: [ 'application/json' ]
   show_webby: false
+  allow_plain_identifiers: true
   swagger:
     versions: [ 3 ]
