@@ -1,0 +1,5 @@
+App\Entity\Phone:
+  phone_{1..218}:
+    phoneNumber: <phoneNumber()>
+    comment: <company()>
+    contact: '@contact_*'
