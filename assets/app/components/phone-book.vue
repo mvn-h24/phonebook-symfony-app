@@ -60,6 +60,7 @@ export default defineComponent({
   margin: auto;
   background: #898686;
   border-radius: 20px;
+  box-sizing: border-box;
 }
 
 .contacts_list::-webkit-scrollbar {
