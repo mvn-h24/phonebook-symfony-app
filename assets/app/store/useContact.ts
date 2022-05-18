@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { Contact, CreateContactDto } from "@app/types";
-import { createContact } from "@api-client";
+import { createContact, getContact, putContact } from "@api-client";
 
 export const contactStoreToken = "contact";
 
@@ -23,8 +23,8 @@ export const useContact = defineStore<string, ContactStore>(contactStoreToken, {
     newContact: false,
   }),
   actions: {
-    setContact(contact: Contact) {
-      this.$state.contact = contact;
+    setToEdit(contact: Contact) {
+      this.$state = { contact, newContact: false };
     },
     initNewContact() {
       this.$state = { contact: defaultContact(), newContact: true };
@@ -45,7 +45,15 @@ export const useContact = defineStore<string, ContactStore>(contactStoreToken, {
             firstName: contact.firstName,
             lastName: contact.lastName,
             patronimycName: contact.patronimycName,
-          }).then((r) => console.log(r));
+          });
+        else return putContact(contact);
+      }
+    },
+    update() {
+      if (this.contact?.id) {
+        return getContact(parseInt(this.contact.id.toString())).then((res) => {
+          this.$state.contact = res;
+        });
       }
     },
   },

@@ -13,6 +13,17 @@
         <span>Patronymic name</span>
         <input v-model="contact.patronimycName" />
       </label>
+      <div v-if="!newContact && contact.phones" style="margin-top: 10px">
+        <ul v-if="contact.phones.length">
+          <li v-for="phone in contact.phones" :key="phone.id">
+            {{ `${phone.phoneNumber} ${phone.comment}` }}
+          </li>
+        </ul>
+        <phone-create-form />
+        <action-key style="margin-top: 10px" @click="initNewPhone"
+          >Add phone
+        </action-key>
+      </div>
       <div class="control-panel">
         <action-key @click="submit">Submit</action-key>
         <action-key @click="cancel">Cancel</action-key>
@@ -24,17 +35,26 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import ActionKey from "@app/ui/action-key.vue";
-import { useContact, useErrorStore } from "@app/store";
+import { useContact, useErrorStore, usePhoneNumber } from "@app/store";
 import { storeToRefs } from "pinia";
+import PhoneCreateForm from "@app/ui/phone-create-form.vue";
 
 export default defineComponent({
   name: "create-contact-dialog",
-  components: { ActionKey },
+  components: { PhoneCreateForm, ActionKey },
   setup() {
     const contactStore = useContact();
     const { contact, newContact } = storeToRefs(contactStore);
+    const pnStore = usePhoneNumber();
     const errorStore = useErrorStore();
-    return { errorStore, contact, contactStore };
+    return { errorStore, contactStore, contact, newContact, pnStore };
+  },
+  mounted() {
+    this.pnStore.$onAction(({ name, after }) => {
+      if (name === "flush") {
+        after(() => this.updateContact());
+      }
+    });
   },
   methods: {
     submit() {
@@ -54,8 +74,14 @@ export default defineComponent({
         });
       }
     },
+    updateContact() {
+      this.contactStore.update();
+    },
     cancel() {
       return this.contactStore.flush();
+    },
+    initNewPhone() {
+      this.pnStore.initNew(this.contact.id);
     },
   },
 });

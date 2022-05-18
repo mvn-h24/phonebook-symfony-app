@@ -18,15 +18,14 @@
           <td>
             <ul v-if="contact.phones.length">
               <li v-for="phone in contact.phones" :key="phone.id">
-                <span>{{ phone.phoneNumber }}</span>
-                <span>{{ phone.comment }}</span>
+                <span>{{ `${phone.phoneNumber} ${phone.comment}` }}</span>
               </li>
             </ul>
-            <div>Для контакта нет номеров</div>
+            <div v-else>Для контакта нет номеров</div>
           </td>
           <td>
-            <action-key>Edit</action-key>
-            <action-key>Delete</action-key>
+            <action-key @click="callEdit(contact)">Edit</action-key>
+            <action-key @click="callDelete(contact.id)">Delete</action-key>
           </td>
         </tr>
       </tbody>
@@ -40,9 +39,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { storeToRefs } from "pinia";
-import { usePhoneBook } from "@app/store";
+import { PhoneBookStoreActions, useContact, usePhoneBook } from "@app/store";
 import TextNotify from "@app/ui/text-notify.vue";
 import ActionKey from "@app/ui/action-key.vue";
+import { Contact } from "@app/types";
+import { deleteContact } from "@api-client";
 
 export default defineComponent({
   name: "contacts-list",
@@ -50,7 +51,18 @@ export default defineComponent({
   setup() {
     const phoneBookStore = usePhoneBook();
     const { contactList } = storeToRefs(phoneBookStore);
-    return { contactList };
+    const contactStore = useContact();
+    return { contactStore, phoneBookStore, contactList };
+  },
+  methods: {
+    callEdit(contact: Contact) {
+      this.contactStore.setToEdit(contact);
+    },
+    callDelete(id: number) {
+      return deleteContact(id).then(() => {
+        (this.phoneBookStore as PhoneBookStoreActions).loadList();
+      });
+    },
   },
 });
 </script>
